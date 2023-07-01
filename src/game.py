@@ -18,7 +18,8 @@ class Game:
             self.game_folder, "img", "map.png"))
         self.colour_bar = pygame.Rect(
             0, self.height*0.9, self.width, self.height/10)
-
+        self.game_bar = pygame.Rect(
+            0, 0, self.width, self.height/10)
         self.location_data = json.load(open(os.path.join(
             self.game_folder, "locations.json")))
         self.locations = []
@@ -39,6 +40,7 @@ class Game:
         return np.sqrt((point1[0]-point2[0])**2+(point1[1]-point2[1])**2)
     
     def distance_to_colour(self, dist):
+        #distance should be between normalized points
         normalized_distance=dist/np.sqrt(2) #sqrt(2) is the max distance on a square of length 1
         return pygame.Color(255, 0, 0,255)
 
@@ -59,8 +61,13 @@ class Game:
                 self.guess_list.append(pygame.mouse.get_pos())
 
     def draw(self):
+        # gamebar
+        pygame.draw.rect(self.window, 'skyblue', self.game_bar)
+
         # add map to game
         self.map.draw(self.window)
+
+        # color bar
         pygame.draw.rect(self.window, 'gray', self.colour_bar)
         for guess in self.guess_list:
              pygame.draw.circle(self.window, self.distance_to_colour(self.distance((0,0), guess)), guess, 4)

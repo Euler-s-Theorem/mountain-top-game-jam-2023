@@ -7,6 +7,8 @@ class Map:
         self.image = pygame.transform.scale_by(
             pygame.image.load(imagePath), .3)
 
+        #
+
     def draw(self, window):
         main_width = window.get_width()
         main_height = window.get_height()
@@ -16,3 +18,9 @@ class Map:
             main_width*.35, main_height*.1, main_width*.65, main_height*.8))
         # draw map
         window.blit(self.image, (main_width*.35, main_height*.1))
+
+    def getMapDimensions(window):
+        main_width = window.get_width()
+        main_height = window.get_height()
+
+        return (main_width*.35, main_height*.1, main_width*.65, main_height*.8)
