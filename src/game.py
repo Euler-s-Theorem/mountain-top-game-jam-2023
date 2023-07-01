@@ -2,6 +2,7 @@ import pygame
 import os
 from location import Location
 from map import Map
+import numpy as np
 
 
 class Game:
@@ -19,13 +20,20 @@ class Game:
 
         self.locations = []
         self.load_locations()
-
-        self.guess_list = []
+        self.current_location=None
+        self.guess_list=[]
 
     def load_locations(self):
         for file in os.listdir(os.path.join(
                 self.game_folder, "img", "locations")):
             self.locations.append(Location.from_filename(file))
+
+    def distance(self, point1, point2):
+        return np.sqrt((point1[0]-point2[0])**2+(point1[1]-point2[1])**2)
+    
+    def distance_to_colour(self, dist):
+        normalized_distance=dist/np.sqrt(2) #sqrt(2) is the max distance on a square of length 1
+        return pygame.Color(int(255*(1-normalized_distance)), 0, int(255*normalized_distance))
 
     def run(self):
         self.running = True
@@ -45,13 +53,11 @@ class Game:
 
     def draw(self):
         # add map to game
-        self.window.blit(self.map, (0, 0))
+        self.map.draw(self.window)
         pygame.draw.rect(self.window, 'gray', self.colour_bar)
         for guess in self.guess_list:
-            pygame.draw.rect(self.window, 'blue', pygame.Rect(
-                guess[0], guess[1], 10, 10))
-        self.map.draw(self.window)
-
+             pygame.draw.circle(self.window, self.distance_to_colour(self.distance((0,0), guess)), guess, 4)
+             
         pygame.display.update()
 
     def game_loop(self):
