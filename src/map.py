@@ -21,5 +21,4 @@ class Map:
         main_width = window.get_width()
         main_height = window.get_height()
 
-        return (main_width*.35, main_height*.1, main_width*.65, main_height*.8)
-    
+        return (main_width*.35, main_height*.1, self.image.get_width(), self.image.get_height())
