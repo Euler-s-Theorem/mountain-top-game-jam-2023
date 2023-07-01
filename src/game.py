@@ -1,5 +1,6 @@
 import pygame
 import os
+from map import Map
 
 
 class Game:
@@ -10,9 +11,7 @@ class Game:
         self.window = pygame.display.set_mode((self.width, self.height))
         self.fps = 60
         self.game_folder = os.path.dirname(__file__)
-        self.guess_image = pygame.image.load(os.path.join(
-            self.game_folder, "img", "testImg.png"))
-        self.map = pygame.image.load(os.path.join(
+        self.map = Map(os.path.join(
             self.game_folder, "img", "map.png"))
 
     def run(self):
@@ -33,9 +32,7 @@ class Game:
                 print(pos)
 
     def draw(self):
-        # add map to game
-        self.window.blit(self.map, (0, 0))
-        #
+        self.map.draw(self.window)
 
         pygame.display.update()
 
