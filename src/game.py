@@ -1,4 +1,5 @@
 import pygame
+import os
 
 
 class Game:
@@ -8,6 +9,9 @@ class Game:
         self.height = 500
         self.window = pygame.display.set_mode((self.width, self.height))
         self.fps = 1
+        self.game_folder = os.path.dirname(__file__)
+        self.map = pygame.image.load(os.path.join(
+            self.game_folder, "img", "map.png"))
 
     def run(self):
         self.running = True
@@ -27,7 +31,8 @@ class Game:
                 print(pos)
 
     def draw(self):
-        pass
+        self.window.blit(self.map, (0, 0))
+        pygame.display.update()
 
     def game_loop(self):
         # Update.
