@@ -7,8 +7,8 @@ from map import Map
 class Game:
     def __init__(self):
         self.running = False
-        self.width = 900
-        self.height = 500
+        self.width = 1100
+        self.height = 620
         self.window = pygame.display.set_mode((self.width, self.height))
         self.fps = 60
         self.game_folder = os.path.dirname(__file__)
@@ -45,13 +45,11 @@ class Game:
 
     def draw(self):
         # add map to game
-        self.window.blit(self.map, (0, 0))
+        self.map.draw(self.window)
         pygame.draw.rect(self.window, 'gray', self.colour_bar)
         for guess in self.guess_list:
             pygame.draw.rect(self.window, 'blue', pygame.Rect(
                 guess[0], guess[1], 10, 10))
-        self.map.draw(self.window)
-
         pygame.display.update()
 
     def game_loop(self):
