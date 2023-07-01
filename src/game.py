@@ -17,7 +17,8 @@ class Game:
             self.game_folder, "img", "map.png"))
         self.colour_bar = pygame.Rect(
             0, self.height*0.9, self.width, self.height/10)
-
+        self.game_bar = pygame.Rect(
+            0, 0, self.width, self.height/10)
         self.location_data = json.load(open(os.path.join(
             self.game_folder, "locations.json")))
         self.locations = []
@@ -51,11 +52,13 @@ class Game:
                 self.guess_list.append(pygame.mouse.get_pos())
 
     def draw(self):
+        # gamebar
+        pygame.draw.rect(self.window, 'skyblue', self.game_bar)
+
         # add map to game
-<<<<<<< HEAD
         self.map.draw(self.window)
-=======
->>>>>>> 59f9b2f0f6899c08ffc9a2d05155e3a8e4fc591d
+
+        # color bar
         pygame.draw.rect(self.window, 'gray', self.colour_bar)
         for guess in self.guess_list:
             pygame.draw.rect(self.window, 'blue', pygame.Rect(
