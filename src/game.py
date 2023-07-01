@@ -5,6 +5,8 @@ import os
 class Game:
     def __init__(self):
         self.running = False
+        self.width = 900
+        self.height = 500
         self.window = pygame.display.set_mode((self.width, self.height))
         self.fps = 60
         self.game_folder = os.path.dirname(__file__)
@@ -12,8 +14,6 @@ class Game:
             self.game_folder, "img", "testImg.png"))
         self.map = pygame.image.load(os.path.join(
             self.game_folder, "img", "map.png"))
-        self.width = 900
-        self.height = 500
 
     def run(self):
         self.running = True
