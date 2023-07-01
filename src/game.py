@@ -15,6 +15,12 @@ class Game:
         self.map = pygame.image.load(os.path.join(
             self.game_folder, "img", "map.png"))
 
+        self.load_locations()
+
+    def load_locations(self):
+        for file in os.listdir(os.path.join(self.game_folder, "img", "locations")):
+            print(file)
+
     def run(self):
         self.running = True
         clock = pygame.time.Clock()
