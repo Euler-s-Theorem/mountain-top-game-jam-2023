@@ -1,5 +1,6 @@
 import pygame
 import os
+from location import Location
 
 
 class Game:
@@ -14,13 +15,15 @@ class Game:
             self.game_folder, "img", "testImg.png"))
         self.map = pygame.image.load(os.path.join(
             self.game_folder, "img", "map.png"))
-        self.colour_bar=pygame.Rect(0,self.height*0.9,self.width, self.height/10)
+        self.colour_bar = pygame.Rect(0, self.height*0.9, self.width, self.height/10)
 
+        self.locations = []
         self.load_locations()
 
     def load_locations(self):
-        for file in os.listdir(os.path.join(self.game_folder, "img", "locations")):
-            print(file)
+        for file in os.listdir(os.path.join(
+                self.game_folder, "img", "locations")):
+            self.locations.append(Location.from_filename(file))
 
     def run(self):
         self.running = True
