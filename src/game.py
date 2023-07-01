@@ -40,7 +40,7 @@ class Game:
     
     def distance_to_colour(self, dist):
         normalized_distance=dist/np.sqrt(2) #sqrt(2) is the max distance on a square of length 1
-        return pygame.Color(int(255*(1-normalized_distance)), 0, int(255*normalized_distance))
+        return pygame.Color(255, 0, 0,255)
 
     def run(self):
         self.running = True
@@ -60,10 +60,7 @@ class Game:
 
     def draw(self):
         # add map to game
-<<<<<<< HEAD
         self.map.draw(self.window)
-=======
->>>>>>> 59f9b2f0f6899c08ffc9a2d05155e3a8e4fc591d
         pygame.draw.rect(self.window, 'gray', self.colour_bar)
         for guess in self.guess_list:
              pygame.draw.circle(self.window, self.distance_to_colour(self.distance((0,0), guess)), guess, 4)
