@@ -24,3 +24,6 @@ class Map:
         main_height = window.get_height()
 
         return (main_width*.35, main_height*.1, self.image.get_width(), self.image.get_height())
+
+    def get_real_map_width(self):
+        return self.real_map_width
