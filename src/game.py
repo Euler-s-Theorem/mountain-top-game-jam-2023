@@ -44,9 +44,25 @@ class Game:
         return np.sqrt((point1[0]-point2[0])**2+(point1[1]-point2[1])**2)
 
     def distance_to_colour(self, dist):
+        # distance should be between normalized points
         # sqrt(2) is the max distance on a square of length 1
         normalized_distance = dist/np.sqrt(2)
-        return pygame.Color(int(255*(1-normalized_distance)), 0, int(255*normalized_distance))
+        return pygame.Color(int(255*(1-normalized_distance)), 0, int(255*normalized_distance), 255)
+
+    def pixel_to_map_position(self, point):
+        # converts a point represented by its pixel to normalized map coordinates
+        # if the pixel is not on the map, returns (-1,-1)
+        dimensions = self.map.getMapDimensions(self.window)
+        map_x, map_y, map_width, map_height = dimensions[0], dimensions[1], dimensions[2], dimensions[3]
+        if point[0] < map_x or point[0] > map_x+map_width or point[1] < map_y or point[1] > map_y+map_height:
+            return (-1, -1)
+        return ((point[0]-map_x)/map_width, (point[1]-map_y)/map_height)
+
+    def map_position_to_pixel(self, point):
+        # converts a point in normalized map coordinates to a pixel
+        dimensions = self.map.getMapDimensions(self.window)
+        map_x, map_y, map_width, map_height = dimensions[0], dimensions[1], dimensions[2], dimensions[3]
+        return (int(point[0]*map_width+map_x), int(point[1]*map_height+map_y))
 
     def run(self):
         self.running = True
@@ -62,7 +78,9 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                self.guess_list.append(pygame.mouse.get_pos())
+                position = self.pixel_to_map_position(pygame.mouse.get_pos())
+                if position != (-1, -1):
+                    self.guess_list.append(position)
 
     def draw(self):
         # gamebar
@@ -82,11 +100,15 @@ class Game:
         self.current_location.draw(self.window)
 
         # color bar
-        pygame.draw.rect(self.window, 'gray', self.colour_bar)
-        for guess in self.guess_list:
-            pygame.draw.circle(self.window, self.distance_to_colour(
-                self.distance((0, 0), guess)), guess, 4)
 
+        for guess in self.guess_list:
+            pygame.draw.circle(self.window, self.distance_to_colour(self.distance((0, 0), guess)),
+                               self.map_position_to_pixel(guess), 4)
+        if len(self.guess_list) > 0:
+            pygame.draw.rect(self.window, self.distance_to_colour(
+                self.distance((0, 0), self.guess_list[-1])), self.colour_bar)
+        else:
+            pygame.draw.rect(self.window, "gray", self.colour_bar)
         pygame.display.update()
 
     def game_loop(self):

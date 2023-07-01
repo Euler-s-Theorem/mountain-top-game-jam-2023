@@ -17,8 +17,9 @@ class Map:
         # draw map
         window.blit(self.image, (main_width*.35, main_height*.1))
 
-    def getMapDimensions(window):
+    def getMapDimensions(self, window):
         main_width = window.get_width()
         main_height = window.get_height()
 
         return (main_width*.35, main_height*.1, main_width*.65, main_height*.8)
+    
