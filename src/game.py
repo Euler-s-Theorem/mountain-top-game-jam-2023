@@ -8,8 +8,10 @@ class Game:
         self.width = 900
         self.height = 500
         self.window = pygame.display.set_mode((self.width, self.height))
-        self.fps = 1
+        self.fps = 60
         self.game_folder = os.path.dirname(__file__)
+        self.guess_image = pygame.image.load(os.path.join(
+            self.game_folder, "img", "testImg.png"))
         self.map = pygame.image.load(os.path.join(
             self.game_folder, "img", "map.png"))
         self.colour_bar=pygame.Rect(0,self.height*0.9,self.width, self.height/10)
@@ -32,6 +34,7 @@ class Game:
                 print(pos)
 
     def draw(self):
+        # add map to game
         self.window.blit(self.map, (0, 0))
         pygame.draw.rect(self.window, 'gray', self.colour_bar)
         pygame.display.update()
