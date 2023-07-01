@@ -6,7 +6,8 @@ class Map:
         # grab the images and scales it before storing into self.image
         self.image = pygame.transform.scale_by(
             pygame.image.load(imagePath), .3)
-
+        #width of the area on the map in real life, in meters
+        self.real_map_width=2650
         #
 
     def draw(self, window):
@@ -25,3 +26,5 @@ class Map:
 
         return (main_width*.35, main_height*.1, main_width*.65, main_height*.8)
     
+    def get_real_map_width(self):
+        return self.real_map_width
