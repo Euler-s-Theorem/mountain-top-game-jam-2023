@@ -2,6 +2,7 @@ import pygame
 import os
 import json
 from location import Location
+from map import Map
 
 
 class Game:
@@ -12,14 +13,17 @@ class Game:
         self.window = pygame.display.set_mode((self.width, self.height))
         self.fps = 60
         self.game_folder = os.path.dirname(__file__)
-        self.map = pygame.image.load(os.path.join(
+        self.map = Map(os.path.join(
             self.game_folder, "img", "map.png"))
-        self.colour_bar = pygame.Rect(0, self.height*0.9, self.width, self.height/10)
+        self.colour_bar = pygame.Rect(
+            0, self.height*0.9, self.width, self.height/10)
 
         self.location_data = json.load(open(os.path.join(
             self.game_folder, "locations.json")))
         self.locations = []
         self.load_locations()
+
+        self.guess_list = []
 
     def load_locations(self):
         directory = os.path.join(self.game_folder, "img", "locations")
@@ -44,13 +48,16 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                print(pos)
+                self.guess_list.append(pygame.mouse.get_pos())
 
     def draw(self):
         # add map to game
-        self.window.blit(self.map, (0, 0))
         pygame.draw.rect(self.window, 'gray', self.colour_bar)
+        for guess in self.guess_list:
+            pygame.draw.rect(self.window, 'blue', pygame.Rect(
+                guess[0], guess[1], 10, 10))
+        self.map.draw(self.window)
+
         pygame.display.update()
 
     def game_loop(self):

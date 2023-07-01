@@ -1,6 +1,10 @@
+import pygame
+
+
 class Map:
-    def __init__(self):
-        pass
+    def __init__(self, image_path):
+        self.image = pygame.image.load(image_path)
 
     def draw(self, window):
-        pass
+        # add map to game
+        window.blit(self.image, (0, 0))
