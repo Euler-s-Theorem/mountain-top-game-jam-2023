@@ -14,6 +14,7 @@ class Game:
             self.game_folder, "img", "testImg.png"))
         self.map = pygame.image.load(os.path.join(
             self.game_folder, "img", "map.png"))
+        self.colour_bar=pygame.Rect(0,self.height*0.9,self.width, self.height/10)
 
         self.load_locations()
 
@@ -41,8 +42,7 @@ class Game:
     def draw(self):
         # add map to game
         self.window.blit(self.map, (0, 0))
-        #
-
+        pygame.draw.rect(self.window, 'gray', self.colour_bar)
         pygame.display.update()
 
     def game_loop(self):
