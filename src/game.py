@@ -23,40 +23,45 @@ class Game:
         self.location_data = json.load(open(os.path.join(
             self.game_folder, "locations.json")))
         self.locations = []
+        self.current_location = None
+
         self.load_locations()
-        self.current_location=None
-        self.guess_list=[]
+        self.guess_list = []
 
     def load_locations(self):
         directory = os.path.join(self.game_folder, "img", "locations")
         for file in os.listdir(directory):
-            filepath = os.path.join(directory, file)
+            filepath = os.path.join(self.game_folder, "img", "locations", file)
             map_x_and_y = self.location_data[file]
-            location = Location(pygame.image.load(filepath), map_x_and_y['x'],
+            location = Location(filepath, map_x_and_y['x'],
                                 map_x_and_y['y'])
             self.locations.append(location)
 
+        if self.locations:
+            self.current_location = self.locations[0]
+
     def distance(self, point1, point2):
         return np.sqrt((point1[0]-point2[0])**2+(point1[1]-point2[1])**2)
-    
+
     def distance_to_colour(self, dist):
-        #distance should be between normalized points
-        normalized_distance=dist/np.sqrt(2) #sqrt(2) is the max distance on a square of length 1
-        return pygame.Color(int(255*(1-normalized_distance)), 0, int(255*normalized_distance),255)
-    
+        # distance should be between normalized points
+        # sqrt(2) is the max distance on a square of length 1
+        normalized_distance = dist/np.sqrt(2)
+        return pygame.Color(int(255*(1-normalized_distance)), 0, int(255*normalized_distance), 255)
+
     def pixel_to_map_position(self, point):
-        #converts a point represented by its pixel to normalized map coordinates
-        #if the pixel is not on the map, returns (-1,-1)
-        dimensions=self.map.getMapDimensions(self.window)
-        map_x, map_y, map_width, map_height=dimensions[0], dimensions[1], dimensions[2], dimensions[3]
-        if point[0]<map_x or point[0]>map_x+map_width or point[1]<map_y or point[1]>map_y+map_height:
-            return (-1,-1)
+        # converts a point represented by its pixel to normalized map coordinates
+        # if the pixel is not on the map, returns (-1,-1)
+        dimensions = self.map.getMapDimensions(self.window)
+        map_x, map_y, map_width, map_height = dimensions[0], dimensions[1], dimensions[2], dimensions[3]
+        if point[0] < map_x or point[0] > map_x+map_width or point[1] < map_y or point[1] > map_y+map_height:
+            return (-1, -1)
         return ((point[0]-map_x)/map_width, (point[1]-map_y)/map_height)
 
     def map_position_to_pixel(self, point):
-        #converts a point in normalized map coordinates to a pixel
-        dimensions=self.map.getMapDimensions(self.window)
-        map_x, map_y, map_width, map_height=dimensions[0], dimensions[1], dimensions[2], dimensions[3]
+        # converts a point in normalized map coordinates to a pixel
+        dimensions = self.map.getMapDimensions(self.window)
+        map_x, map_y, map_width, map_height = dimensions[0], dimensions[1], dimensions[2], dimensions[3]
         return (int(point[0]*map_width+map_x), int(point[1]*map_height+map_y))
     
     def distance_to_message(self, dist):
@@ -92,19 +97,29 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                position=self.pixel_to_map_position(pygame.mouse.get_pos())
-                if position != (-1,-1):
+                position = self.pixel_to_map_position(pygame.mouse.get_pos())
+                if position != (-1, -1):
                     self.guess_list.append(position)
 
     def draw(self):
         # gamebar
         pygame.draw.rect(self.window, 'skyblue', self.game_bar)
 
+        pygame.font.init()  # initilize font
+        font = pygame.font.SysFont('Arial', 30)
+        guess_text = font.render("Guesses Remaining:  X", True, "black")
+        self.window.blit(guess_text, (5, 10))
+
+        points_text = font.render("Score:  X", True, "black")
+        self.window.blit(points_text, (self.width*.85, 10))
         # add map to game
         self.map.draw(self.window)
 
+        # draw image of location
+        self.current_location.draw(self.window)
+
         # color bar
-        
+
         for guess in self.guess_list:
              pygame.draw.circle(self.window, self.distance_to_colour(self.distance((0,0), guess)),
                                  self.map_position_to_pixel(guess), 4)

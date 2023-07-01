@@ -4,7 +4,7 @@ import pygame
 class Map:
     def __init__(self, imagePath):
         # grab the images and scales it before storing into self.image
-        self.image = pygame.transform.scale_by(
+        self.image = pygame.transform.smoothscale_by(
             pygame.image.load(imagePath), .3)
         #width of the area on the map in real life, in meters
         self.real_map_width=2650
