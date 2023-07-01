@@ -1,5 +1,6 @@
 import pygame
 import os
+import json
 from location import Location
 from map import Map
 
@@ -17,15 +18,21 @@ class Game:
         self.colour_bar = pygame.Rect(
             0, self.height*0.9, self.width, self.height/10)
 
+        self.location_data = json.load(open(os.path.join(
+            self.game_folder, "locations.json")))
         self.locations = []
         self.load_locations()
 
         self.guess_list = []
 
     def load_locations(self):
-        for file in os.listdir(os.path.join(
-                self.game_folder, "img", "locations")):
-            self.locations.append(Location.from_filename(file))
+        directory = os.path.join(self.game_folder, "img", "locations")
+        for file in os.listdir(directory):
+            filepath = os.path.join(directory, file)
+            map_x_and_y = self.location_data[file]
+            location = Location(pygame.image.load(filepath), map_x_and_y['x'],
+                                map_x_and_y['y'])
+            self.locations.append(location)
 
     def run(self):
         self.running = True
@@ -45,7 +52,10 @@ class Game:
 
     def draw(self):
         # add map to game
+<<<<<<< HEAD
         self.map.draw(self.window)
+=======
+>>>>>>> 59f9b2f0f6899c08ffc9a2d05155e3a8e4fc591d
         pygame.draw.rect(self.window, 'gray', self.colour_bar)
         for guess in self.guess_list:
             pygame.draw.rect(self.window, 'blue', pygame.Rect(
