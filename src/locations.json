@@ -61,24 +61,23 @@
   },
   "Parking Lot North of Blusson.jpg": {
     "x": 0.82,
-    "y": 0.32,
-    "comment": "todo below"
-  },
-  "3D Printer.jpg": {
-    "x": 0.82,
     "y": 0.32
   },
+  "3D Printer.jpg": {
+    "x": 0.44,
+    "y": 0.54
+  },
   "50 Yard Line.jpg": {
-    "x": 0.62,
-    "y": 0.49
+    "x": 0.17,
+    "y": 0.83
   },
   "AQ Sculpture.jpg": {
-    "x": 0.62,
-    "y": 0.49
+    "x": 0.65,
+    "y": 0.68
   },
   "Behind Stadium Seating.jpg": {
-    "x": 0.62,
-    "y": 0.49
+    "x": 0.16,
+    "y": 0.67
   },
   "Below Rotunda.jpg": {
     "x": 0.62,
