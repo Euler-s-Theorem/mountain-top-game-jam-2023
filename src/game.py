@@ -149,6 +149,7 @@ class Game:
                         self.gameScreen = 1
                 if self.gameScreen == 2:
                     if self.check_if_position_in_domain(position, self.buttons["playAgainButton"]):
+                        self.score = 0
                         self.gameScreen = 0
                         self.score = 0
                         self.load_locations()
