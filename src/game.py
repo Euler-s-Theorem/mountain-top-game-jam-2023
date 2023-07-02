@@ -79,8 +79,13 @@ class Game:
     def distance_to_colour(self, dist):
         # distance should be between normalized points
         # sqrt(2) is the max distance on a square of length 1
-        normalized_distance = dist/np.sqrt(2)
-        return pygame.Color(int(255*(1-normalized_distance)), 0, int(255*normalized_distance), 255)
+        normalized_distance = dist
+        if dist > 1:
+            normalized_distance=1
+        if normalized_distance<0.5:
+            return pygame.Color(int(255*normalized_distance*2), 255, 0)
+        else:
+            return pygame.Color(255, int(2*255*(1-normalized_distance)), 0)
 
     def pixel_to_map_position(self, point):
         # converts a point represented by its pixel to normalized map coordinates
