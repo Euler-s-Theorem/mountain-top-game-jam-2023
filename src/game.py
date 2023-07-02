@@ -13,7 +13,7 @@ class Game:
         self.width = 1100
         self.height = 620
         self.window = pygame.display.set_mode((self.width, self.height))
-        self.fps = 60
+        self.fps = 20
         self.game_folder = os.path.dirname(__file__)
         self.map = Map(os.path.join(
             self.game_folder, "img", "map.png"))
@@ -28,6 +28,8 @@ class Game:
         self.change_current_location_bool = False
         self.load_locations()
         self.guess_list = []
+
+        self.score = 0
 
     def load_locations(self):
         directory = os.path.join(self.game_folder, "img", "locations")
@@ -127,11 +129,19 @@ class Game:
 
     def current_location_changer(self):
         if self.change_current_location_bool:
+            # get current index of current image being displayed
             current_location_index = self.locations.index(
                 self.current_location)
-            if current_location_index < self.locations.size:
+            if current_location_index < len(self.locations) - 1:
                 current_location_index += 1
                 self.current_location = self.locations[current_location_index]
+                # increase score
+                points = 100 - np.exp(1) ** (len(self.guess_list) - 1)
+                if points < 5:
+                    points = 5
+                self.score += int(points)
+                # empty guess list
+                self.guess_list = []
             else:
                 pass  # should be game over msg since no more pics
             self.change_current_location_bool = False
@@ -142,10 +152,11 @@ class Game:
 
         pygame.font.init()  # initilize font
         font = pygame.font.SysFont('Arial', 30)
-        guess_text = font.render("Guesses Remaining:  X", True, "black")
+        guess_text = font.render(
+            "Guesses Used: " + str(len(self.guess_list)), True, "black")
         self.window.blit(guess_text, (5, 10))
 
-        points_text = font.render("Score:  X", True, "black")
+        points_text = font.render("Score:  " + str(self.score), True, "black")
         self.window.blit(points_text, (self.width*.85, 10))
         # add map to game
         self.map.draw(self.window)
