@@ -31,7 +31,7 @@ class Game:
             self.game_folder, "locations.json")))
         self.locations = []
         self.current_location = None
-        self.number_of_locations = 1
+        self.number_of_locations = int(8.5)
         self.load_locations()
         self.guess_list = []
         # gameScreen = 0 is start screen mode, =1 is normal mode, 2 is endscreen mode
@@ -149,6 +149,7 @@ class Game:
                         self.gameScreen = 1
                 if self.gameScreen == 2:
                     if self.check_if_position_in_domain(position, self.buttons["playAgainButton"]):
+                        self.score=0
                         self.gameScreen = 0
                         self.load_locations()
                         print("here")
