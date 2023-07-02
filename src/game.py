@@ -31,7 +31,7 @@ class Game:
             self.game_folder, "locations.json")))
         self.locations = []
         self.current_location = None
-        self.number_of_locations=7
+        self.number_of_locations = 7
         self.load_locations()
         self.guess_list = []
         # gameScreen = 0 is start screen mode, =1 is normal mode, 2 is endscreen mode
@@ -39,9 +39,8 @@ class Game:
         self.score = 0
 
         self.buttons = {
-            "startButton": (-1, -1, -1, -1)}
-        self.booleans = {"Change_current_location": False,
-                         "Loading Screen": True}
+            "startButton": (-1, -1, -1, -1), "playAgainButton": {-1, -1, -1, -1}}
+        self.booleans = {"Change_current_location": False}
 
     def load_locations(self):
         # draw loading screen first
@@ -57,13 +56,13 @@ class Game:
         self.window.blit(title_text, title_text_rext)
         pygame.display.update()
 
-
         directory = os.path.join(self.game_folder, "img", "locations")
-        image_names=os.listdir(directory)
-        random_location_indices=random.sample(range(len(image_names)), self.number_of_locations)
+        image_names = os.listdir(directory)
+        random_location_indices = random.sample(
+            range(len(image_names)), self.number_of_locations)
 
         for i in range(self.number_of_locations):
-            file=image_names[random_location_indices[i]]
+            file = image_names[random_location_indices[i]]
             filepath = os.path.join(self.game_folder, "img", "locations", file)
             map_x_and_y = self.location_data[file]
             location = Location(filepath, map_x_and_y['x'],
@@ -81,8 +80,8 @@ class Game:
         # sqrt(2) is the max distance on a square of length 1
         normalized_distance = dist
         if dist > 1:
-            normalized_distance=1
-        if normalized_distance<0.5:
+            normalized_distance = 1
+        if normalized_distance < 0.5:
             return pygame.Color(int(255*normalized_distance*2), 255, 0)
         else:
             return pygame.Color(255, int(2*255*(1-normalized_distance)), 0)
@@ -184,7 +183,7 @@ class Game:
         self.window.fill("white")
         if (self.gameScreen == 0):
             self.drawHomeScreen()
-        else:
+        elif self.gameScreen == 1:
             # gamebar
             self.game_bar = pygame.Rect(0, 0, self.width, self.height/10)
             pygame.draw.rect(self.window, 'skyblue', self.game_bar)
@@ -212,7 +211,8 @@ class Game:
 
             # check if user found right answer
             self.current_location_changer()
-
+        elif self.gameScreen == 2:
+            self.drawEndScreen()
         pygame.display.update()
 
     def draw_colorbar_message(self):
@@ -297,3 +297,25 @@ class Game:
         self.window.blit(helpButtonText, helpButton)
         self.buttons["helpButton"] = (
             helpButton.top, helpButton.left, helpButton.bottom, helpButton.right)"""
+
+    def drawEndScreen(self):
+        self.window.fill("skyblue")
+        # the title text part
+        topBanner = pygame.Rect(0, 0, self.width, self.height*.2)
+        pygame.draw.rect(self.window, 'skyblue', topBanner)
+        title_text = pygame.font.SysFont('Arial', 45).render(
+            "Game over, You have scored " + str(self.score) + " points!", True, "black")
+        title_text_rext = title_text.get_rect()
+        title_text_rext.center = (self.width/2, self.height/2-250)
+        pygame.draw.rect(self.window, "skyblue", title_text_rext)
+        self.window.blit(title_text, title_text_rext)
+
+        # restart button
+        playAgainButtonText = pygame.font.SysFont(
+            'Arial', 75).render(" Play Again ", True, "black")
+        playAgainButton = playAgainButtonText.get_rect()
+        playAgainButton.center = (self.width*.5, self.height*.91)
+        pygame.draw.rect(self.window, "red", playAgainButton)
+        self.window.blit(playAgainButtonText, playAgainButton)
+        self.buttons["playAgainButton"] = (
+            playAgainButton.top, playAgainButton.left, playAgainButton.bottom, playAgainButton.right)
