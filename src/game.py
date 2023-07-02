@@ -27,6 +27,7 @@ class Game:
             self.game_folder, "locations.json")))
         self.locations = []
         self.current_location = None
+        self.number_of_locations=7
         self.load_locations()
         self.guess_list = []
         # gameScreen = 0 is start screen mode, =1 is normal mode, 2 is endscreen mode
@@ -52,15 +53,18 @@ class Game:
         self.window.blit(title_text, title_text_rext)
         pygame.display.update()
 
+
         directory = os.path.join(self.game_folder, "img", "locations")
-        for file in os.listdir(directory):
+        image_names=os.listdir(directory)
+        random_location_indices=random.sample(range(len(image_names)), self.number_of_locations)
+
+        for i in range(self.number_of_locations):
+            file=image_names[random_location_indices[i]]
             filepath = os.path.join(self.game_folder, "img", "locations", file)
             map_x_and_y = self.location_data[file]
             location = Location(filepath, map_x_and_y['x'],
                                 map_x_and_y['y'])
             self.locations.append(location)
-
-        random.shuffle(self.locations)
 
         if self.locations:
             self.current_location = self.locations[0]
