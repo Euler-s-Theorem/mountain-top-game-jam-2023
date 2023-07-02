@@ -130,8 +130,8 @@ class Game:
                 if self.gameScreen == 1:
                     if position != (-1, -1):
                         self.guess_list.append(position)
-                elif self.gameScreen == 0:
-                    if position.x <
+               # elif self.gameScreen == 0:
+                    #if position.x <
 
     def current_location_changer(self):
         if self.change_current_location_bool:
