@@ -155,7 +155,7 @@ class Game:
 
         # draw guesss
         for guess in self.guess_list:
-            pygame.draw.circle(self.window, self.distance_to_colour(self.distance((0, 0), guess)),
+            pygame.draw.circle(self.window, self.distance_to_colour(self.distance(self.current_location.get_position(), guess)),
                                self.map_position_to_pixel(guess), 4)
         self.draw_colorbar_message()
 
@@ -169,9 +169,9 @@ class Game:
         font = pygame.font.SysFont('Arial', 30)
         if len(self.guess_list) > 0:
             pygame.draw.rect(self.window, self.distance_to_colour(
-                self.distance((0, 0), self.guess_list[-1])), self.colour_bar)
+                self.distance(self.current_location.get_position(), self.guess_list[-1])), self.colour_bar)
             message = self.distance_to_message(
-                self.distance((0, 0), self.guess_list[-1]))
+                self.distance(self.current_location.get_position(), self.guess_list[-1]))
 
             message_text = font.render(message, True, "black")
             self.window.blit(message_text, (5, self.height*0.92))
