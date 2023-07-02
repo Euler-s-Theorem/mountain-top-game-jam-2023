@@ -1,11 +1,12 @@
 import pygame
+from utils import resource_path
 
 
 class Location:
     def __init__(self, imagePath, map_x=0, map_y=0):
 
         self.image = pygame.transform.smoothscale_by(
-            pygame.image.load(imagePath), .08)
+            pygame.image.load(resource_path(imagePath)), .08)
         self.image = pygame.transform.rotate(self.image, 270)
 
         # cordinates of location in the map
