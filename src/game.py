@@ -129,9 +129,11 @@ class Game:
         if self.change_current_location_bool:
             current_location_index = self.locations.index(
                 self.current_location)
-            if current_location_index != self.locations.size - 1:
+            if current_location_index < self.locations.size:
                 current_location_index += 1
                 self.current_location = self.locations[current_location_index]
+            else:
+                pass  # should be game over msg since no more pics
             self.change_current_location_bool = False
 
     def draw(self):
@@ -151,7 +153,6 @@ class Game:
         # draw image of location
         self.current_location.draw(self.window)
 
-        # color bar
         # draw guesss
         for guess in self.guess_list:
             pygame.draw.circle(self.window, self.distance_to_colour(self.distance((0, 0), guess)),
