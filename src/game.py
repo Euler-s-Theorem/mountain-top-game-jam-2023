@@ -116,8 +116,8 @@ class Game:
         else:
             message = "You're way off. You're " + \
                 str(time_away)+" minutes away."
-        if self.guess_list:
-            message += str(np.round(self.guess_list[-1], 3))
+        #if self.guess_list:
+           # message += str(np.round(self.guess_list[-1], 3))
         return message
 
     def run(self):
