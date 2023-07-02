@@ -60,7 +60,6 @@ class Game:
         image_names = os.listdir(directory)
         random_location_indices = random.sample(
             range(len(image_names)), self.number_of_locations)
-        print(random_location_indices)
         for i in range(self.number_of_locations):
             file = image_names[random_location_indices[i]]
             filepath = os.path.join(self.game_folder, "img", "locations", file)
