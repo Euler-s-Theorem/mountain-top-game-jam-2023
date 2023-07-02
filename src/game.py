@@ -36,9 +36,8 @@ class Game:
         self.score = 0
 
         self.buttons = {
-            "startButton": (-1, -1, -1, -1)}
-        self.booleans = {"Change_current_location": False,
-                         "Loading Screen": True}
+            "startButton": (-1, -1, -1, -1), "playAgainButton": {-1, -1, -1, -1}}
+        self.booleans = {"Change_current_location": False}
 
     def load_locations(self):
         # draw loading screen first
@@ -165,7 +164,7 @@ class Game:
         self.window.fill("white")
         if (self.gameScreen == 0):
             self.drawHomeScreen()
-        else:
+        elif self.gameScreen == 1:
             # gamebar
             self.game_bar = pygame.Rect(0, 0, self.width, self.height/10)
             pygame.draw.rect(self.window, 'skyblue', self.game_bar)
@@ -193,7 +192,8 @@ class Game:
 
             # check if user found right answer
             self.current_location_changer()
-
+        elif self.gameScreen == 2:
+            self.drawEndScreen()
         pygame.display.update()
 
     def draw_colorbar_message(self):
@@ -278,3 +278,25 @@ class Game:
         self.window.blit(helpButtonText, helpButton)
         self.buttons["helpButton"] = (
             helpButton.top, helpButton.left, helpButton.bottom, helpButton.right)"""
+
+    def drawEndScreen(self):
+        self.window.fill("skyblue")
+        # the title text part
+        topBanner = pygame.Rect(0, 0, self.width, self.height*.2)
+        pygame.draw.rect(self.window, 'skyblue', topBanner)
+        title_text = pygame.font.SysFont('Arial', 45).render(
+            "Game over, You have scored " + str(self.score) + " points!", True, "black")
+        title_text_rext = title_text.get_rect()
+        title_text_rext.center = (self.width/2, self.height/2-250)
+        pygame.draw.rect(self.window, "skyblue", title_text_rext)
+        self.window.blit(title_text, title_text_rext)
+
+        # restart button
+        playAgainButtonText = pygame.font.SysFont(
+            'Arial', 75).render(" Play Again ", True, "black")
+        playAgainButton = playAgainButtonText.get_rect()
+        playAgainButton.center = (self.width*.5, self.height*.91)
+        pygame.draw.rect(self.window, "red", playAgainButton)
+        self.window.blit(playAgainButtonText, playAgainButton)
+        self.buttons["playAgainButton"] = (
+            playAgainButton.top, playAgainButton.left, playAgainButton.bottom, playAgainButton.right)
