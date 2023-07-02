@@ -30,7 +30,6 @@ class Game:
         self.guess_list = []
         # gameScreen = 0 is start screen mode, =1 is normal mode, 2 is endscreen mode
         self.gameScreen = 1
-
         self.score = 0
 
     def load_locations(self):
@@ -105,9 +104,10 @@ class Game:
         elif time_away <= 10:
             message = "Getting warmer. You're "+str(time_away)+" minutes away."
         elif time_away <= 20:
-            message = "Not quite. You're "+str(time_away)+" minutes away."
+            message = "Not quite. You're " + str(time_away)+" minutes away."
         else:
-            message = "You're way off. You're "+str(time_away)+" minutes away."
+            message = "You're way off. You're " + \
+                str(time_away)+" minutes away."
         if self.guess_list:
             message += str(np.round(self.guess_list[-1], 3))
         return message
@@ -126,12 +126,12 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-
+                position = self.pixel_to_map_position(pygame.mouse.get_pos())
                 if self.gameScreen == 1:
-                    position = self.pixel_to_map_position(
-                        pygame.mouse.get_pos())
-                if position != (-1, -1):
-                    self.guess_list.append(position)
+                    if position != (-1, -1):
+                        self.guess_list.append(position)
+                elif self.gameScreen == 0:
+                    if position.x <
 
     def current_location_changer(self):
         if self.change_current_location_bool:
