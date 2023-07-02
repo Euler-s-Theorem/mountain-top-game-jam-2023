@@ -13,8 +13,9 @@ class Map:
         main_width = window.get_width()
         main_height = window.get_height()
         # draw mapground for map
-        pygame.draw.rect(window, "skyblue", pygame.Rect(
-            main_width*.35, main_height*.1, main_width*.65, main_height*.8))
+        container = pygame.Rect(
+            main_width*.35, main_height*.1, main_width*.65, main_height*.8)
+        pygame.draw.rect(window, "skyblue", container)
         # draw map
         window.blit(self.image, (main_width*.35, main_height*.2))
 
