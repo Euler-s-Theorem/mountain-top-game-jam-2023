@@ -31,10 +31,11 @@ class Game:
             self.game_folder, "locations.json")))
         self.locations = []
         self.current_location = None
+        self.number_of_locations = 7
         self.load_locations()
         self.guess_list = []
         # gameScreen = 0 is start screen mode, =1 is normal mode, 2 is endscreen mode
-        self.gameScreen = 2
+        self.gameScreen = 1
         self.score = 0
 
         self.buttons = {
@@ -56,14 +57,17 @@ class Game:
         pygame.display.update()
 
         directory = os.path.join(self.game_folder, "img", "locations")
-        for file in os.listdir(directory):
+        image_names = os.listdir(directory)
+        random_location_indices = random.sample(
+            range(len(image_names)), self.number_of_locations)
+
+        for i in range(self.number_of_locations):
+            file = image_names[random_location_indices[i]]
             filepath = os.path.join(self.game_folder, "img", "locations", file)
             map_x_and_y = self.location_data[file]
             location = Location(filepath, map_x_and_y['x'],
                                 map_x_and_y['y'])
             self.locations.append(location)
-
-        random.shuffle(self.locations)
 
         if self.locations:
             self.current_location = self.locations[0]
@@ -74,8 +78,13 @@ class Game:
     def distance_to_colour(self, dist):
         # distance should be between normalized points
         # sqrt(2) is the max distance on a square of length 1
-        normalized_distance = dist/np.sqrt(2)
-        return pygame.Color(int(255*(1-normalized_distance)), 0, int(255*normalized_distance), 255)
+        normalized_distance = dist
+        if dist > 1:
+            normalized_distance = 1
+        if normalized_distance < 0.5:
+            return pygame.Color(int(255*normalized_distance*2), 255, 0)
+        else:
+            return pygame.Color(255, int(2*255*(1-normalized_distance)), 0)
 
     def pixel_to_map_position(self, point):
         # converts a point represented by its pixel to normalized map coordinates

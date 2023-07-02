@@ -40,32 +40,196 @@
     "y": 0.37 
   },
   "Bus Loop Flag Pole.jpg": {
-    "comment": "todo: everything below this",
-    "x": 0.61,
-    "y": 0.36
+    "x": 0.86,
+    "y": 0.6
   },
   "By Physics Common Room.jpg": {
-    "x": 0.61,
-    "y": 0.36
+    "x": 0.6,
+    "y": 0.8
   },
   "Canoe Exterior.jpg": {
-    "x": 0.61,
-    "y": 0.36
-  },
-  "Canoe Interior.jpg": {
-    "x": 0.61,
-    "y": 0.36
+    "x": 0.62,
+    "y": 0.49
   },
   "East Bus Loop.jpg": {
-    "x": 0.61,
-    "y": 0.36
+    "x": 0.86,
+    "y": 0.54
   },
   "Fountain by Bus Loop.jpg": {
-    "x": 0.61,
-    "y": 0.36
+    "x": 0.85,
+    "y": 0.62
   },
   "Parking Lot North of Blusson.jpg": {
-    "x": 0.61,
-    "y": 0.36
+    "x": 0.82,
+    "y": 0.32,
+    "comment": "todo below"
+  },
+  "3D Printer.jpg": {
+    "x": 0.82,
+    "y": 0.32
+  },
+  "50 Yard Line.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "AQ Sculpture.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Behind Stadium Seating.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Below Rotunda.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Blue Pyramid.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Blusson Roof.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Convocation Ceiling.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Emergency Pillar.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Entrance Flags.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Field 2.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Fox Field Scoreboard.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Math West.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Memorial Chairs.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Model of SFU.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Museum Hangings.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Outside AQ.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Pacman.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Painting.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Piano Below Rotunda.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Raccoon.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Rotunda Piano.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Rotunda Roof.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Southeast AQ Sculpture.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Stadium Seating.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Strand Star Bench.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Sundial.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "TASC Exterior.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "TASC Garden.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "TASC Hammer.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "TASC Sculpture.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Tennis Courts.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Totem Pole.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Trottier Mural.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Trottier Path.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Trottier Sky Diagram.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "West Mall AC.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "West Mall Courtyard.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "West Mall Mural.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "West Mall Seating.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "West Mall Statue.jpg": {
+    "x": 0.62,
+    "y": 0.49
+  },
+  "Window Bird.jpg": {
+    "x": 0.62,
+    "y": 0.49
   }
 }
