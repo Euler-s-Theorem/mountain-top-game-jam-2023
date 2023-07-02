@@ -212,6 +212,8 @@ class Game:
             if "You got it!" in message:
                 time.sleep(1.5)
         else:
+            self.colour_bar = pygame.Rect(
+                0, self.height*0.9, self.width, self.height/10)
             pygame.draw.rect(self.window, "gray", self.colour_bar)
             message_text = font.render(
                 "Guess where the picture was taken from by clicking on the map.", True, "black")
