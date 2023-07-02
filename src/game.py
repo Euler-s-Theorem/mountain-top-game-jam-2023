@@ -200,7 +200,6 @@ class Game:
         if len(self.guess_list) > 0:
             self.colour_bar = pygame.Rect(
                 0, self.height*0.9, self.width, self.height/10)
-            print(self.width)
             pygame.draw.rect(self.window, self.distance_to_colour(
                 self.distance(self.current_location.get_position(), self.guess_list[-1])), self.colour_bar)
             message = self.distance_to_message(
