@@ -132,7 +132,7 @@ class Game:
             # get current index of current image being displayed
             current_location_index = self.locations.index(
                 self.current_location)
-            if current_location_index < len(self.locations) - 1:
+            if current_location_index < len(self.locations):
                 current_location_index += 1
                 self.current_location = self.locations[current_location_index]
                 # increase score
@@ -164,6 +164,7 @@ class Game:
         # draw image of location
         self.current_location.draw(self.window)
 
+        # color bar
         # draw guesss
         for guess in self.guess_list:
             pygame.draw.circle(self.window, self.distance_to_colour(self.distance(self.current_location.get_position(), guess)),
