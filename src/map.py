@@ -18,6 +18,7 @@ class Map:
         pygame.draw.rect(window, "skyblue", container)
         # draw map
         window.blit(self.image, (main_width*.35, main_height*.2))
+        # window.blit(self.image, (container.x))
 
     def getMapDimensions(self, window):
         main_width = window.get_width()
