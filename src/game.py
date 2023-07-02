@@ -24,7 +24,7 @@ class Game:
             self.game_folder, "locations.json")))
         self.locations = []
         self.current_location = None
-
+        self.change_current_location_bool = False
         self.load_locations()
         self.guess_list = []
 
@@ -63,25 +63,28 @@ class Game:
         dimensions = self.map.getMapDimensions(self.window)
         map_x, map_y, map_width, map_height = dimensions[0], dimensions[1], dimensions[2], dimensions[3]
         return (int(point[0]*map_width+map_x), int(point[1]*map_height+map_y))
-    
-    def distance_to_message(self, dist):
-        normalized_distance=dist/np.sqrt(2)
-        real_map_width=self.map.get_real_map_width()
-        #The average speed is 1.35 m/s
-        time_away=int(normalized_distance*real_map_width/(1.35*60))
-        message=""
-        if time_away==0:
-            message="You got it!"
-        elif time_away<=5:
-            message="You're so close! You're "+str(time_away)+" minutes away."
-        elif time_away<=10:
-            message="Getting warmer. You're "+str(time_away)+" minutes away."
-        elif time_away<=20:
-            message="Not quite. You're "+str(time_away)+" minutes away."
-        else:
-            message="You're way off. You're "+str(time_away)+" minutes away."
 
-        return message    
+    def distance_to_message(self, dist):
+        normalized_distance = dist/np.sqrt(2)
+        real_map_width = self.map.get_real_map_width()
+        # The average speed is 1.35 m/s
+        time_away = int(normalized_distance*real_map_width/(1.35*60))
+        message = ""
+        if time_away == 0:
+            message = "You got it!"
+            self.change_current_location_bool = True
+
+        elif time_away <= 5:
+            message = "You're so close! You're " + \
+                str(time_away)+" minutes away."
+        elif time_away <= 10:
+            message = "Getting warmer. You're "+str(time_away)+" minutes away."
+        elif time_away <= 20:
+            message = "Not quite. You're "+str(time_away)+" minutes away."
+        else:
+            message = "You're way off. You're "+str(time_away)+" minutes away."
+
+        return message
 
     def run(self):
         self.running = True
@@ -101,6 +104,14 @@ class Game:
                 if position != (-1, -1):
                     self.guess_list.append(position)
 
+    def current_location_changer(self):
+        if self.change_current_location_bool:
+            current_location_index = self.locations.index(current_location)
+            if current_location_index != self.locations.length() - 1:
+                current_location_index += 1
+                self.current_location = self.locations[current_location_index]
+            self.change_current_location_bool = False
+
     def draw(self):
         # gamebar
         pygame.draw.rect(self.window, 'skyblue', self.game_bar)
@@ -119,24 +130,33 @@ class Game:
         self.current_location.draw(self.window)
 
         # color bar
-
+        # draw guesss
         for guess in self.guess_list:
-             pygame.draw.circle(self.window, self.distance_to_colour(self.distance((0,0), guess)),
-                                 self.map_position_to_pixel(guess), 4)
-             
+            pygame.draw.circle(self.window, self.distance_to_colour(self.distance((0, 0), guess)),
+                               self.map_position_to_pixel(guess), 4)
+        self.draw_colorbar_message(self)
+
+        # check if user found right answer
+        self.current_location_changer()
+
+        pygame.display.update()
+
+    def draw_colorbar_message(self):
         pygame.font.init()  # initilize font
-        font = pygame.font.SysFont('Arial', 30)     
-        if len(self.guess_list)>0:
-            pygame.draw.rect(self.window, self.distance_to_colour(self.distance((0,0), self.guess_list[-1])), self.colour_bar)
-            message=self.distance_to_message(self.distance((0,0), self.guess_list[-1]))    
-            
+        font = pygame.font.SysFont('Arial', 30)
+        if len(self.guess_list) > 0:
+            pygame.draw.rect(self.window, self.distance_to_colour(
+                self.distance((0, 0), self.guess_list[-1])), self.colour_bar)
+            message = self.distance_to_message(
+                self.distance((0, 0), self.guess_list[-1]))
+
             message_text = font.render(message, True, "black")
-            self.window.blit(message_text, (5, self.height*0.92)) 
+            self.window.blit(message_text, (5, self.height*0.92))
         else:
             pygame.draw.rect(self.window, "gray", self.colour_bar)
-            message_text = font.render("Guess where the picture was taken from by clicking on the map.", True, "black")
-            self.window.blit(message_text, (5, self.height*0.92)) 
-        pygame.display.update()
+            message_text = font.render(
+                "Guess where the picture was taken from by clicking on the map.", True, "black")
+            self.window.blit(message_text, (5, self.height*0.92))
 
     def game_loop(self):
         # Update.
