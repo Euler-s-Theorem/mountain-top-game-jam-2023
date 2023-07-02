@@ -139,16 +139,15 @@ class Game:
                 self.running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 position = pygame.mouse.get_pos()
-                print("at currently " + str(self.gameScreen))
                 if self.gameScreen == 1:
                     position = self.pixel_to_map_position(
                         pygame.mouse.get_pos())
                     if position != (-1, -1):
                         self.guess_list.append(position)
-                elif self.gameScreen == 0:
+                if self.gameScreen == 0:
                     if self.check_if_position_in_domain(position, self.buttons["startButton"]):
                         self.gameScreen = 1
-                elif self.gameScreen == 2:
+                if self.gameScreen == 2:
                     if self.check_if_position_in_domain(position, self.buttons["playAgainButton"]):
                         self.gameScreen = 0
                         self.load_locations()
@@ -177,6 +176,7 @@ class Game:
                 self.gameScreen = 2
             # increase score
             points = 100 - np.exp(1) ** (len(self.guess_list) - 1)
+            points += 17*np.sin(points)
             if points < 5:
                 points = 5
             self.score += int(points)
