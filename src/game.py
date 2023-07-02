@@ -4,6 +4,7 @@ import json
 from location import Location
 from map import Map
 import numpy as np
+import random
 
 
 class Game:
@@ -37,6 +38,8 @@ class Game:
                                 map_x_and_y['y'])
             self.locations.append(location)
 
+        random.shuffle(self.locations)
+
         if self.locations:
             self.current_location = self.locations[0]
 
@@ -67,8 +70,8 @@ class Game:
     def distance_to_message(self, dist):
         normalized_distance=dist/np.sqrt(2)
         real_map_width=self.map.get_real_map_width()
-        #The average speed is 1.35 m/s
-        time_away=int(normalized_distance*real_map_width/(1.35*60))
+        #Assume people walk at 1m/s
+        time_away=int(normalized_distance*real_map_width/(60))
         message=""
         if time_away==0:
             message="You got it!"
@@ -121,14 +124,14 @@ class Game:
         # color bar
 
         for guess in self.guess_list:
-             pygame.draw.circle(self.window, self.distance_to_colour(self.distance((0,0), guess)),
+             pygame.draw.circle(self.window, self.distance_to_colour(self.distance(self.current_location.get_position(), guess)),
                                  self.map_position_to_pixel(guess), 4)
              
         pygame.font.init()  # initilize font
         font = pygame.font.SysFont('Arial', 30)     
         if len(self.guess_list)>0:
-            pygame.draw.rect(self.window, self.distance_to_colour(self.distance((0,0), self.guess_list[-1])), self.colour_bar)
-            message=self.distance_to_message(self.distance((0,0), self.guess_list[-1]))    
+            pygame.draw.rect(self.window, self.distance_to_colour(self.distance(self.current_location.get_position(), self.guess_list[-1])), self.colour_bar)
+            message=self.distance_to_message(self.distance(self.current_location.get_position(), self.guess_list[-1]))    
             
             message_text = font.render(message, True, "black")
             self.window.blit(message_text, (5, self.height*0.92)) 
