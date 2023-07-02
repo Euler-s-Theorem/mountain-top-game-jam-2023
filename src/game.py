@@ -142,7 +142,7 @@ class Game:
             # get current index of current image being displayed
             current_location_index = self.locations.index(
                 self.current_location)
-            if current_location_index < len(self.locations):
+            if current_location_index < len(self.locations) - 1:
                 current_location_index += 1
                 self.current_location = self.locations[current_location_index]
                 # increase score
