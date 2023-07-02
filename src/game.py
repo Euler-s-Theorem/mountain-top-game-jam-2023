@@ -12,10 +12,10 @@ import threading
 class Game:
     def __init__(self):
         self.running = False
-        self.width = 1200
-        self.height = 800
-        self.min_width = 1200
-        self.min_height = 800
+        self.width = 1100
+        self.height = 600
+        self.min_width = 1000
+        self.min_height = 550
         self.window = pygame.display.set_mode(
             (self.width, self.height), pygame.RESIZABLE)
         pygame.display.set_caption("Peak Guesser")
@@ -31,7 +31,7 @@ class Game:
             self.game_folder, "locations.json")))
         self.locations = []
         self.current_location = None
-        self.number_of_locations = 7
+        self.number_of_locations = 1
         self.load_locations()
         self.guess_list = []
         # gameScreen = 0 is start screen mode, =1 is normal mode, 2 is endscreen mode
@@ -138,16 +138,24 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                position = pygame.mouse.get_pos()
+                print("at currently " + str(self.gameScreen))
                 if self.gameScreen == 1:
                     position = self.pixel_to_map_position(
                         pygame.mouse.get_pos())
                     if position != (-1, -1):
                         self.guess_list.append(position)
-                if self.gameScreen == 0:
-                    if self.check_if_position_in_domain(pygame.mouse.get_pos(), self.buttons["startButton"]):
+                elif self.gameScreen == 0:
+                    if self.check_if_position_in_domain(position, self.buttons["startButton"]):
                         self.gameScreen = 1
+                elif self.gameScreen == 2:
+                    if self.check_if_position_in_domain(position, self.buttons["playAgainButton"]):
+                        self.gameScreen = 0
+                        self.load_locations()
+                        print("here")
                         """elif self.check_if_position_in_domain(pygame.mouse.get_pos(), self.buttons["helpButton"]):
                             self.gameScreen = 1"""
+
             elif event.type == pygame.VIDEORESIZE:
                 self.width = event.size[0]
                 self.height = event.size[1]
@@ -165,15 +173,16 @@ class Game:
             if current_location_index < len(self.locations) - 1:
                 current_location_index += 1
                 self.current_location = self.locations[current_location_index]
-                # increase score
-                points = 100 - np.exp(1) ** (len(self.guess_list) - 1)
-                if points < 5:
-                    points = 5
-                self.score += int(points)
-                # empty guess list
-                self.guess_list = []
             else:
-                pass  # should be game over msg since no more pics
+                self.gameScreen = 2
+            # increase score
+            points = 100 - np.exp(1) ** (len(self.guess_list) - 1)
+            if points < 5:
+                points = 5
+            self.score += int(points)
+            # empty guess list
+            self.guess_list = []
+
             self.booleans["Change_current_location"] = False
 
     def draw(self):
@@ -314,7 +323,7 @@ class Game:
         playAgainButtonText = pygame.font.SysFont(
             'Arial', 75).render(" Play Again ", True, "black")
         playAgainButton = playAgainButtonText.get_rect()
-        playAgainButton.center = (self.width*.5, self.height*.91)
+        playAgainButton.center = (self.width*.5, self.height*.6)
         pygame.draw.rect(self.window, "red", playAgainButton)
         self.window.blit(playAgainButtonText, playAgainButton)
         self.buttons["playAgainButton"] = (
