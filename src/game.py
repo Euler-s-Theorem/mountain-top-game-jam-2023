@@ -16,6 +16,7 @@ class Game:
         self.height = 620
         self.window = pygame.display.set_mode(
             (self.width, self.height), pygame.RESIZABLE)
+        pygame.display.set_caption("Peak Guesser")
         self.fps = 30
         self.game_folder = os.path.dirname(__file__)
         self.map = Map(os.path.join(
