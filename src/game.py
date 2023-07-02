@@ -5,6 +5,7 @@ from location import Location
 from map import Map
 import numpy as np
 import random
+import time
 
 
 class Game:
@@ -25,7 +26,6 @@ class Game:
             self.game_folder, "locations.json")))
         self.locations = []
         self.current_location = None
-        self.change_current_location_bool = False
         self.load_locations()
         self.guess_list = []
         # gameScreen = 0 is start screen mode, =1 is normal mode, 2 is endscreen mode
@@ -34,8 +34,23 @@ class Game:
 
         self.buttons = {
             "startButton": (-1, -1, -1, -1), "helpButton": (-1, -1, -1, -1)}
+        self.booleans = {"Change_current_location": False,
+                         "Loading Screen": True}
 
     def load_locations(self):
+        # draw loading screen first
+        self.window.fill("white")
+        pygame.font.init()  # initilize font
+        # topBanner = pygame.Rect(0, 0, self.width, self.height*.2)
+        # pygame.draw.rect(self.window, 'skyblue', topBanner)
+        title_text = pygame.font.SysFont('Arial', 65).render(
+            "Loading....", True, "black")
+        title_text_rext = title_text.get_rect()
+        title_text_rext.center = (self.width/2, self.height/2)
+        pygame.draw.rect(self.window, "white", title_text_rext)
+        self.window.blit(title_text, title_text_rext)
+        pygame.display.update()
+
         directory = os.path.join(self.game_folder, "img", "locations")
         for file in os.listdir(directory):
             filepath = os.path.join(self.game_folder, "img", "locations", file)
@@ -79,9 +94,9 @@ class Game:
         # The average speed is 1.35 m/s
         time_away = int(normalized_distance*real_map_width/(1.35*60))
         message = ""
-        if time_away == 0:
+        if time_away <= 1:
             message = "You got it!"
-            self.change_current_location_bool = True
+            self.booleans["Change_current_location"] = True
         elif time_away <= 5:
             message = "You're so close! You're " + \
                 str(time_away)+" minutes away."
@@ -122,7 +137,7 @@ class Game:
                         self.gameScreen = 1
 
     def current_location_changer(self):
-        if self.change_current_location_bool:
+        if self.booleans["Change_current_location"]:
             # get current index of current image being displayed
             current_location_index = self.locations.index(
                 self.current_location)
@@ -138,53 +153,12 @@ class Game:
                 self.guess_list = []
             else:
                 pass  # should be game over msg since no more pics
-            self.change_current_location_bool = False
+            self.booleans["Change_current_location"] = False
 
     def draw(self):
         pygame.font.init()  # initilize font
         if (self.gameScreen == 0):
-            # the start screen
-            self.window.fill("white")
-
-            # the title text part
-            topBanner = pygame.Rect(0, 0, self.width, self.height*.2)
-            pygame.draw.rect(self.window, 'skyblue', topBanner)
-            title_text = pygame.font.SysFont('Arial', 45).render(
-                "How well do you know the tallest Peak in Burnaby?", True, "black")
-            title_text_rext = title_text.get_rect()
-            title_text_rext.center = (self.width/2, self.height/2-250)
-            pygame.draw.rect(self.window, "skyblue", title_text_rext)
-            self.window.blit(title_text, title_text_rext)
-
-            # get img in middle
-            burnaby_mountain_image = pygame.image.load(
-                os.path.join(self.game_folder, "img", "Burnaby_Mountain.jpg"))
-            burnaby_mountain_image = pygame.transform.smoothscale_by(
-                burnaby_mountain_image, .15)
-            self.window.blit(burnaby_mountain_image, (0, self.height*.2))
-
-            bottomBanner = pygame.Rect(
-                0, self.height*.8, self.width, self.height*.3)
-            pygame.draw.rect(self.window, 'skyblue', bottomBanner)
-
-            # start button
-            startButtonText = pygame.font.SysFont(
-                'Arial', 75).render(" Start ", True, "black")
-            startButton = startButtonText.get_rect()
-            startButton.center = (self.width*.3, self.height/2+250)
-            pygame.draw.rect(self.window, "blue", startButton)
-            self.window.blit(startButtonText, startButton)
-            self.buttons["startButton"] = (
-                startButton.top, startButton.left, startButton.bottom, startButton.right)
-            # help button
-            helpButtonText = pygame.font.SysFont(
-                'Arial', 75).render(" Help ", True, "black")
-            helpButton = helpButtonText.get_rect()
-            helpButton.center = (self.width*.7, self.height/2+250)
-            pygame.draw.rect(self.window, "lightgreen", helpButton)
-            self.window.blit(helpButtonText, helpButton)
-            self.buttons["helpButton"] = (
-                helpButton.top, helpButton.left, helpButton.bottom, helpButton.right)
+            self.drawHomeScreen()
         else:
             # gamebar
             pygame.draw.rect(self.window, 'skyblue', self.game_bar)
@@ -223,9 +197,12 @@ class Game:
                 self.distance(self.current_location.get_position(), self.guess_list[-1])), self.colour_bar)
             message = self.distance_to_message(
                 self.distance(self.current_location.get_position(), self.guess_list[-1]))
-
             message_text = font.render(message, True, "black")
             self.window.blit(message_text, (5, self.height*0.92))
+
+            if "You got it!" in message:
+                print("true")
+                time.sleep(1.5)
         else:
             pygame.draw.rect(self.window, "gray", self.colour_bar)
             message_text = font.render(
@@ -240,9 +217,51 @@ class Game:
 
 # bottom isnt done yet
     def check_if_position_in_domain(self, mousePostion, domain):
-        print(str(mousePostion) + str(domain))
 
         if mousePostion[0] <= domain[3] and mousePostion[0] >= domain[1] and mousePostion[1] >= domain[1] and mousePostion[1] <= domain[2]:
             return True
-        print("false")
         return False
+
+    def drawHomeScreen(self):
+        # the start screen
+        self.window.fill("white")
+
+        # the title text part
+        topBanner = pygame.Rect(0, 0, self.width, self.height*.2)
+        pygame.draw.rect(self.window, 'skyblue', topBanner)
+        title_text = pygame.font.SysFont('Arial', 45).render(
+            "How well do you know the tallest Peak in Burnaby?", True, "black")
+        title_text_rext = title_text.get_rect()
+        title_text_rext.center = (self.width/2, self.height/2-250)
+        pygame.draw.rect(self.window, "skyblue", title_text_rext)
+        self.window.blit(title_text, title_text_rext)
+
+        # get img in middle
+        burnaby_mountain_image = pygame.image.load(
+            os.path.join(self.game_folder, "img", "Burnaby_Mountain.jpg"))
+        burnaby_mountain_image = pygame.transform.smoothscale_by(
+            burnaby_mountain_image, .15)
+        self.window.blit(burnaby_mountain_image, (0, self.height*.2))
+
+        bottomBanner = pygame.Rect(
+            0, self.height*.8, self.width, self.height*.3)
+        pygame.draw.rect(self.window, 'skyblue', bottomBanner)
+
+        # start button
+        startButtonText = pygame.font.SysFont(
+            'Arial', 75).render(" Start ", True, "black")
+        startButton = startButtonText.get_rect()
+        startButton.center = (self.width*.3, self.height/2+250)
+        pygame.draw.rect(self.window, "blue", startButton)
+        self.window.blit(startButtonText, startButton)
+        self.buttons["startButton"] = (
+            startButton.top, startButton.left, startButton.bottom, startButton.right)
+        # help button
+        helpButtonText = pygame.font.SysFont(
+            'Arial', 75).render(" Help ", True, "black")
+        helpButton = helpButtonText.get_rect()
+        helpButton.center = (self.width*.7, self.height/2+250)
+        pygame.draw.rect(self.window, "lightgreen", helpButton)
+        self.window.blit(helpButtonText, helpButton)
+        self.buttons["helpButton"] = (
+            helpButton.top, helpButton.left, helpButton.bottom, helpButton.right)
