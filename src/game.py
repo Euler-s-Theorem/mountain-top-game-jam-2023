@@ -20,7 +20,7 @@ class Game:
         pygame.display.set_caption("Peak Guesser")
         self.fps = 30
         # self.game_folder = os.path.dirname(__file__)
-        self.map = Map(os.path.join("src", "img", "map.png"))
+        self.map = Map(os.path.join("img", "map.png"))
         self.colour_bar = pygame.Rect(
             0, self.height*0.9, self.width, self.height/10)
         self.game_bar = pygame.Rect(
@@ -60,7 +60,7 @@ class Game:
 
         for i in range(self.number_of_locations):
             file = image_names[random_location_indices[i]]
-            filepath = os.path.join("src", "img", "locations", file)
+            filepath = os.path.join("img", "locations", file)
             map_x_and_y = self.location_data[file]
             location = Location(filepath, map_x_and_y['x'],
                                 map_x_and_y['y'])
@@ -275,7 +275,7 @@ class Game:
 
         # get img in middle
         burnaby_mountain_image = pygame.image.load(resource_path(
-            os.path.join("src", "img", "Burnaby_Mountain.jpg")))
+            os.path.join("img", "Burnaby_Mountain.jpg")))
         burnaby_mountain_image = pygame.transform.smoothscale_by(
             burnaby_mountain_image, .25)
         self.window.blit(burnaby_mountain_image, (0, self.height*.2))
