@@ -31,7 +31,7 @@ class Game:
             self.game_folder, "locations.json")))
         self.locations = []
         self.current_location = None
-        self.number_of_locations = int(8.5)
+        self.number_of_locations = 8
         self.load_locations()
         self.guess_list = []
         # gameScreen = 0 is start screen mode, =1 is normal mode, 2 is endscreen mode
@@ -60,7 +60,7 @@ class Game:
         image_names = os.listdir(directory)
         random_location_indices = random.sample(
             range(len(image_names)), self.number_of_locations)
-
+        print(random_location_indices)
         for i in range(self.number_of_locations):
             file = image_names[random_location_indices[i]]
             filepath = os.path.join(self.game_folder, "img", "locations", file)
@@ -149,8 +149,9 @@ class Game:
                         self.gameScreen = 1
                 if self.gameScreen == 2:
                     if self.check_if_position_in_domain(position, self.buttons["playAgainButton"]):
-                        self.score=0
+                        self.score = 0
                         self.gameScreen = 0
+                        self.score = 0
                         self.load_locations()
                         """elif self.check_if_position_in_domain(pygame.mouse.get_pos(), self.buttons["helpButton"]):
                             self.gameScreen = 1"""
@@ -175,8 +176,8 @@ class Game:
             else:
                 self.gameScreen = 2
             # increase score
-            points = 100 - np.exp(1) ** (len(self.guess_list) - 1)
-            points += 17*np.sin(points)
+            points = 10000000 - np.exp((len(self.guess_list) - 1))
+            points += 1700*np.sin(points)
             if points < 5:
                 points = 5
             self.score += int(points)
