@@ -30,7 +30,7 @@ class Game:
         self.load_locations()
         self.guess_list = []
         # gameScreen = 0 is start screen mode, =1 is normal mode, 2 is endscreen mode
-        self.gameScreen = 0
+        self.gameScreen = 1
         self.score = 0
 
         self.buttons = {
