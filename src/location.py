@@ -6,6 +6,8 @@ class Location:
 
         self.image = pygame.transform.smoothscale_by(
             pygame.image.load(imagePath), .08)
+        self.image = pygame.transform.rotate(self.image, 270)
+
         # cordinates of location in the map
         self.map_x = map_x
         self.map_y = map_y

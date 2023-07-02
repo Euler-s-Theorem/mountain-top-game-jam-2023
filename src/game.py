@@ -13,8 +13,9 @@ class Game:
         self.running = False
         self.width = 1100
         self.height = 620
-        self.window = pygame.display.set_mode((self.width, self.height))
-        self.fps = 20
+        self.window = pygame.display.set_mode(
+            (self.width, self.height), pygame.RESIZABLE)
+        self.fps = 30
         self.game_folder = os.path.dirname(__file__)
         self.map = Map(os.path.join(
             self.game_folder, "img", "map.png"))
@@ -157,10 +158,13 @@ class Game:
 
     def draw(self):
         pygame.font.init()  # initilize font
+        self.width, self.height = self.window.get_size()
+        self.window.fill("white")
         if (self.gameScreen == 0):
             self.drawHomeScreen()
         else:
             # gamebar
+            self.game_bar = pygame.Rect(0, 0, self.width, self.height/10)
             pygame.draw.rect(self.window, 'skyblue', self.game_bar)
 
             font = pygame.font.SysFont('Arial', 30)
@@ -191,17 +195,21 @@ class Game:
 
     def draw_colorbar_message(self):
         pygame.font.init()  # initilize font
+
         font = pygame.font.SysFont('Arial', 30)
         if len(self.guess_list) > 0:
+            self.colour_bar = pygame.Rect(
+                0, self.height*0.9, self.width, self.height/10)
+            print(self.width)
             pygame.draw.rect(self.window, self.distance_to_colour(
                 self.distance(self.current_location.get_position(), self.guess_list[-1])), self.colour_bar)
             message = self.distance_to_message(
                 self.distance(self.current_location.get_position(), self.guess_list[-1]))
             message_text = font.render(message, True, "black")
-            self.window.blit(message_text, (5, self.height*0.92))
+            self.window.blit(
+                message_text, self.colour_bar)  # (5, self.height*0.92)
 
             if "You got it!" in message:
-                print("true")
                 time.sleep(1.5)
         else:
             pygame.draw.rect(self.window, "gray", self.colour_bar)
@@ -240,7 +248,7 @@ class Game:
         burnaby_mountain_image = pygame.image.load(
             os.path.join(self.game_folder, "img", "Burnaby_Mountain.jpg"))
         burnaby_mountain_image = pygame.transform.smoothscale_by(
-            burnaby_mountain_image, .15)
+            burnaby_mountain_image, .25)
         self.window.blit(burnaby_mountain_image, (0, self.height*.2))
 
         bottomBanner = pygame.Rect(
