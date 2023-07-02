@@ -172,8 +172,9 @@ class Game:
             else:
                 self.gameScreen = 2
             # increase score
-            points = 10000000 - np.exp((len(self.guess_list) - 1))
-            points += 1700*np.sin(points)
+            points = 100 - np.exp((len(self.guess_list) - 1)) + 1
+            points += np.sqrt(np.pi * points ** 2 + 1)
+            points = int(points)
             if points < 5:
                 points = 5
             self.score += int(points)
@@ -201,7 +202,7 @@ class Game:
 
             points_text = font.render(
                 "Score:  " + str(self.score), True, "black")
-            self.window.blit(points_text, (self.width*.85, 10))
+            self.window.blit(points_text, (self.width*.7, 10))
             # add map to game
             self.map.draw(self.window)
 
