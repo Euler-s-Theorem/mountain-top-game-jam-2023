@@ -11,8 +11,10 @@ import time
 class Game:
     def __init__(self):
         self.running = False
-        self.width = 1100
-        self.height = 620
+        self.width = 1200
+        self.height = 800
+        self.min_width = 1200
+        self.min_height = 800
         self.window = pygame.display.set_mode(
             (self.width, self.height), pygame.RESIZABLE)
         pygame.display.set_caption("Peak Guesser")
@@ -126,7 +128,7 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            elif event.type == pygame.MOUSEBUTTONDOWN:
                 if self.gameScreen == 1:
                     position = self.pixel_to_map_position(
                         pygame.mouse.get_pos())
@@ -137,6 +139,16 @@ class Game:
                         self.gameScreen = 1
                     elif self.check_if_position_in_domain(pygame.mouse.get_pos(), self.buttons["helpButton"]):
                         self.gameScreen = 1
+            elif event.type == pygame.VIDEORESIZE:
+                self.width = event.size[0]
+                self.height = event.size[1]
+                apply_min = False
+                if self.width < self.min_width or self.height < self.min_height:
+                    apply_min = True
+                    self.width = max(self.width, self.min_width)
+                    self.height = max(self.height, self.min_height)
+                    pygame.display.set_mode(
+                        (self.width, self.height), pygame.RESIZABLE)
 
     def current_location_changer(self):
         if self.booleans["Change_current_location"]:
@@ -242,7 +254,7 @@ class Game:
         title_text = pygame.font.SysFont('Arial', 45).render(
             "How well do you know the tallest Peak in Burnaby?", True, "black")
         title_text_rext = title_text.get_rect()
-        title_text_rext.center = (self.width/2, self.height/2-250)
+        title_text_rext.center = (self.width/2, 75)
         pygame.draw.rect(self.window, "skyblue", title_text_rext)
         self.window.blit(title_text, title_text_rext)
 
