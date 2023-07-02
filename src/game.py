@@ -152,7 +152,6 @@ class Game:
                         self.score=0
                         self.gameScreen = 0
                         self.load_locations()
-                        print("here")
                         """elif self.check_if_position_in_domain(pygame.mouse.get_pos(), self.buttons["helpButton"]):
                             self.gameScreen = 1"""
 
