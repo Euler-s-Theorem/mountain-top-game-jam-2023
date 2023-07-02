@@ -39,7 +39,7 @@ class Game:
         self.score = 0
 
         self.buttons = {
-            "startButton": (-1, -1, -1, -1), "playAgainButton": {-1, -1, -1, -1}}
+            "startButton": (-1, -1, -1, -1), "playAgainButton": (-1, -1, -1, -1)}
         self.booleans = {"Change_current_location": False}
 
     def load_locations(self):
@@ -176,7 +176,7 @@ class Game:
                 self.gameScreen = 2
             # increase score
             points = 100 - np.exp((len(self.guess_list) - 1)) + 1
-            points += np.sqrt(np.pi * points ** 2 + 1)
+            points += np.sqrt(points ** 2 + 1)
             points = int(points)
             if points < 5:
                 points = 5
@@ -297,35 +297,26 @@ class Game:
         self.window.blit(startButtonText, startButton)
         self.buttons["startButton"] = (
             startButton.top, startButton.left, startButton.bottom, startButton.right)
-        # help button
-        """
-        helpButtonText = pygame.font.SysFont(
-            'Arial', 75).render(" Help ", True, "black")
-        helpButton = helpButtonText.get_rect()
-        helpButton.center = (self.width*.7, self.height/2+250)
-        pygame.draw.rect(self.window, "lightgreen", helpButton)
-        self.window.blit(helpButtonText, helpButton)
-        self.buttons["helpButton"] = (
-            helpButton.top, helpButton.left, helpButton.bottom, helpButton.right)"""
 
     def drawEndScreen(self):
-        self.window.fill("skyblue")
-        # the title text part
-        topBanner = pygame.Rect(0, 0, self.width, self.height*.2)
-        pygame.draw.rect(self.window, 'skyblue', topBanner)
-        title_text = pygame.font.SysFont('Arial', 45).render(
-            "Game over, You have scored " + str(self.score) + " points!", True, "black")
-        title_text_rext = title_text.get_rect()
-        title_text_rext.center = (self.width/2, self.height/2-250)
-        pygame.draw.rect(self.window, "skyblue", title_text_rext)
-        self.window.blit(title_text, title_text_rext)
+        if self.gameScreen == 2:
+            self.window.fill("skyblue")
+            # the title text part
+            topBanner = pygame.Rect(0, 0, self.width, self.height*.2)
+            pygame.draw.rect(self.window, 'skyblue', topBanner)
+            title_text = pygame.font.SysFont('Arial', 45).render(
+                "Game over, You have scored " + str(self.score) + " points!", True, "black")
+            title_text_rext = title_text.get_rect()
+            title_text_rext.center = (self.width/2, self.height/2-250)
+            pygame.draw.rect(self.window, "skyblue", title_text_rext)
+            self.window.blit(title_text, title_text_rext)
 
-        # restart button
-        playAgainButtonText = pygame.font.SysFont(
-            'Arial', 75).render(" Play Again ", True, "black")
-        playAgainButton = playAgainButtonText.get_rect()
-        playAgainButton.center = (self.width*.5, self.height*.6)
-        pygame.draw.rect(self.window, "red", playAgainButton)
-        self.window.blit(playAgainButtonText, playAgainButton)
-        self.buttons["playAgainButton"] = (
-            playAgainButton.top, playAgainButton.left, playAgainButton.bottom, playAgainButton.right)
+            # restart button
+            playAgainButtonText = pygame.font.SysFont(
+                'Arial', 75).render(" Play Again ", True, "black")
+            playAgainButton = playAgainButtonText.get_rect()
+            playAgainButton.center = (self.width*.5, self.height*.6)
+            pygame.draw.rect(self.window, "red", playAgainButton)
+            self.window.blit(playAgainButtonText, playAgainButton)
+            self.buttons["playAgainButton"] = (
+                playAgainButton.top, playAgainButton.left, playAgainButton.bottom, playAgainButton.right)
