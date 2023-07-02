@@ -32,7 +32,8 @@ class Game:
         self.gameScreen = 0
         self.score = 0
 
-        self.buttons = {"startButton": (), "endButton": ()}
+        self.buttons = {
+            "startButton": (-1, -1, -1, -1), "helpButton": (-1, -1, -1, -1)}
 
     def load_locations(self):
         directory = os.path.join(self.game_folder, "img", "locations")
@@ -109,12 +110,16 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                position = self.pixel_to_map_position(pygame.mouse.get_pos())
                 if self.gameScreen == 1:
+                    position = self.pixel_to_map_position(
+                        pygame.mouse.get_pos())
                     if position != (-1, -1):
                         self.guess_list.append(position)
-                elif self.gameScreen == 0:
-                    pass
+                if self.gameScreen == 0:
+                    if self.check_if_position_in_domain(pygame.mouse.get_pos(), self.buttons["startButton"]):
+                        self.gameScreen = 1
+                    elif self.check_if_position_in_domain(pygame.mouse.get_pos(), self.buttons["helpButton"]):
+                        self.gameScreen = 1
 
     def current_location_changer(self):
         if self.change_current_location_bool:
@@ -137,7 +142,6 @@ class Game:
 
     def draw(self):
         pygame.font.init()  # initilize font
-        print(self.buttons)
         if (self.gameScreen == 0):
             # the start screen
             self.window.fill("white")
@@ -235,7 +239,10 @@ class Game:
         self.draw()
 
 # bottom isnt done yet
-    def check_if_position_in_domain(mousePostion, domain):
-        if mousePostion[1] <= domain[3] and mousePostion[1] >= domain[1] and mousePostion[2] >= domain[1] and mousePostion[2] >= domain[4]:
+    def check_if_position_in_domain(self, mousePostion, domain):
+        print(str(mousePostion) + str(domain))
+
+        if mousePostion[0] <= domain[3] and mousePostion[0] >= domain[1] and mousePostion[1] >= domain[1] and mousePostion[1] <= domain[2]:
             return True
+        print("false")
         return False
