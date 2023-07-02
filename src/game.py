@@ -29,8 +29,10 @@ class Game:
         self.load_locations()
         self.guess_list = []
         # gameScreen = 0 is start screen mode, =1 is normal mode, 2 is endscreen mode
-        self.gameScreen = 1
+        self.gameScreen = 0
         self.score = 0
+
+        self.buttons = {"startButton": (), "endButton": ()}
 
     def load_locations(self):
         directory = os.path.join(self.game_folder, "img", "locations")
@@ -69,25 +71,6 @@ class Game:
         dimensions = self.map.getMapDimensions(self.window)
         map_x, map_y, map_width, map_height = dimensions[0], dimensions[1], dimensions[2], dimensions[3]
         return (int(point[0]*map_width+map_x), int(point[1]*map_height+map_y))
-
-    """def distance_to_message(self, dist):
-        normalized_distance = dist/np.sqrt(2)
-        real_map_width = self.map.get_real_map_width()
-        # Assume people walk at 1m/s
-        time_away = int(normalized_distance*real_map_width/(60))
-        message = ""
-        if time_away == 0:
-            message = "You got it!"
-        elif time_away <= 5:
-            message = "You're so close! You're " + \
-                str(time_away)+" minutes away."
-        elif time_away <= 10:
-            message = "Getting warmer. You're "+str(time_away)+" minutes away."
-        elif time_away <= 20:
-            message = "Not quite. You're "+str(time_away)+" minutes away."
-        else:
-            message = "You're way off. You're "+str(time_away)+" minutes away."
-"""
 
     def distance_to_message(self, dist):
         normalized_distance = dist/np.sqrt(2)
@@ -131,7 +114,7 @@ class Game:
                     if position != (-1, -1):
                         self.guess_list.append(position)
                 elif self.gameScreen == 0:
-                    if position.x <
+                    pass
 
     def current_location_changer(self):
         if self.change_current_location_bool:
@@ -154,7 +137,7 @@ class Game:
 
     def draw(self):
         pygame.font.init()  # initilize font
-
+        print(self.buttons)
         if (self.gameScreen == 0):
             # the start screen
             self.window.fill("white")
@@ -187,6 +170,8 @@ class Game:
             startButton.center = (self.width*.3, self.height/2+250)
             pygame.draw.rect(self.window, "blue", startButton)
             self.window.blit(startButtonText, startButton)
+            self.buttons["startButton"] = (
+                startButton.top, startButton.left, startButton.bottom, startButton.right)
             # help button
             helpButtonText = pygame.font.SysFont(
                 'Arial', 75).render(" Help ", True, "black")
@@ -194,6 +179,8 @@ class Game:
             helpButton.center = (self.width*.7, self.height/2+250)
             pygame.draw.rect(self.window, "lightgreen", helpButton)
             self.window.blit(helpButtonText, helpButton)
+            self.buttons["helpButton"] = (
+                helpButton.top, helpButton.left, helpButton.bottom, helpButton.right)
         else:
             # gamebar
             pygame.draw.rect(self.window, 'skyblue', self.game_bar)
@@ -246,3 +233,9 @@ class Game:
         self.update()
         # Draw.
         self.draw()
+
+# bottom isnt done yet
+    def check_if_position_in_domain(mousePostion, domain):
+        if mousePostion[1] <= domain[3] and mousePostion[1] >= domain[1] and mousePostion[2] >= domain[1] and mousePostion[2] >= domain[4]:
+            return True
+        return False
