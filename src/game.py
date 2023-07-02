@@ -4,6 +4,7 @@ import json
 from location import Location
 from map import Map
 import numpy as np
+import random
 
 
 class Game:
@@ -37,6 +38,8 @@ class Game:
                                 map_x_and_y['y'])
             self.locations.append(location)
 
+        random.shuffle(self.locations)
+
         if self.locations:
             self.current_location = self.locations[0]
 
@@ -63,6 +66,24 @@ class Game:
         dimensions = self.map.getMapDimensions(self.window)
         map_x, map_y, map_width, map_height = dimensions[0], dimensions[1], dimensions[2], dimensions[3]
         return (int(point[0]*map_width+map_x), int(point[1]*map_height+map_y))
+
+    def distance_to_message(self, dist):
+        normalized_distance = dist/np.sqrt(2)
+        real_map_width = self.map.get_real_map_width()
+        # Assume people walk at 1m/s
+        time_away = int(normalized_distance*real_map_width/(60))
+        message = ""
+        if time_away == 0:
+            message = "You got it!"
+        elif time_away <= 5:
+            message = "You're so close! You're " + \
+                str(time_away)+" minutes away."
+        elif time_away <= 10:
+            message = "Getting warmer. You're "+str(time_away)+" minutes away."
+        elif time_away <= 20:
+            message = "Not quite. You're "+str(time_away)+" minutes away."
+        else:
+            message = "You're way off. You're "+str(time_away)+" minutes away."
 
     def distance_to_message(self, dist):
         normalized_distance = dist/np.sqrt(2)
@@ -106,7 +127,8 @@ class Game:
 
     def current_location_changer(self):
         if self.change_current_location_bool:
-            current_location_index = self.locations.index(current_location)
+            current_location_index = self.locations.index(
+                self.current_location)
             if current_location_index != self.locations.length() - 1:
                 current_location_index += 1
                 self.current_location = self.locations[current_location_index]
