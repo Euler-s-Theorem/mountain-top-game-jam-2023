@@ -19,13 +19,14 @@ class Game:
             (self.width, self.height), pygame.RESIZABLE)
         pygame.display.set_caption("Peak Guesser")
         self.fps = 30
-        # self.game_folder = os.path.dirname(__file__)
-        self.map = Map(os.path.join("img", "map.png"))
+        self.game_folder = os.path.dirname(__file__)
+        self.map = Map(os.path.join(self.game_folder, "img", "map.png"))
         self.colour_bar = pygame.Rect(
             0, self.height*0.9, self.width, self.height/10)
         self.game_bar = pygame.Rect(
             0, 0, self.width, self.height/10)
-        self.location_data = json.load(open(os.path.join("src", "locations.json")))
+        self.location_data = json.load(
+            open(os.path.join(self.game_folder, "locations.json")))
         self.locations = []
         self.current_location = None
         self.number_of_locations = 8
@@ -53,7 +54,7 @@ class Game:
         self.window.blit(title_text, title_text_rext)
         pygame.display.update()
 
-        directory = os.path.join("src", "img", "locations")
+        directory = os.path.join(self.game_folder, "img", "locations")
         image_names = os.listdir(directory)
         random_location_indices = random.sample(
             range(len(image_names)), self.number_of_locations)
@@ -116,7 +117,7 @@ class Game:
         else:
             message = "You're way off. You're " + \
                 str(time_away)+" minutes away."
-        #if self.guess_list:
+        # if self.guess_list:
            # message += str(np.round(self.guess_list[-1], 3))
         return message
 
@@ -276,7 +277,7 @@ class Game:
 
         # get img in middle
         burnaby_mountain_image = pygame.image.load(resource_path(
-            os.path.join("img", "Burnaby_Mountain.jpg")))
+            os.path.join(self.game_folder, "img", "Burnaby_Mountain.jpg")))
         burnaby_mountain_image = pygame.transform.smoothscale_by(
             burnaby_mountain_image, .25)
         self.window.blit(burnaby_mountain_image, (0, self.height*.2))
