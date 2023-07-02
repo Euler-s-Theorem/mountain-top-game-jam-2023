@@ -142,7 +142,7 @@ class Game:
             # get current index of current image being displayed
             current_location_index = self.locations.index(
                 self.current_location)
-            if current_location_index < len(self.locations):
+            if current_location_index < len(self.locations) - 1:
                 current_location_index += 1
                 self.current_location = self.locations[current_location_index]
                 # increase score
@@ -212,6 +212,8 @@ class Game:
             if "You got it!" in message:
                 time.sleep(1.5)
         else:
+            self.colour_bar = pygame.Rect(
+                0, self.height*0.9, self.width, self.height/10)
             pygame.draw.rect(self.window, "gray", self.colour_bar)
             message_text = font.render(
                 "Guess where the picture was taken from by clicking on the map.", True, "black")
