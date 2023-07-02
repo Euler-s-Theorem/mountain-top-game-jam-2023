@@ -2,7 +2,7 @@ import pygame
 
 
 class Location:
-    def __init__(self, imagePath, map_x, map_y):
+    def __init__(self, imagePath, map_x=0, map_y=0):
 
         self.image = pygame.transform.smoothscale_by(
             pygame.image.load(imagePath), .08)
