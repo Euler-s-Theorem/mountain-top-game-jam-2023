@@ -6,6 +6,7 @@ from map import Map
 import numpy as np
 import random
 import time
+import threading
 
 
 class Game:
@@ -37,7 +38,7 @@ class Game:
         self.score = 0
 
         self.buttons = {
-            "startButton": (-1, -1, -1, -1), "helpButton": (-1, -1, -1, -1)}
+            "startButton": (-1, -1, -1, -1)}
         self.booleans = {"Change_current_location": False,
                          "Loading Screen": True}
 
@@ -137,14 +138,12 @@ class Game:
                 if self.gameScreen == 0:
                     if self.check_if_position_in_domain(pygame.mouse.get_pos(), self.buttons["startButton"]):
                         self.gameScreen = 1
-                    elif self.check_if_position_in_domain(pygame.mouse.get_pos(), self.buttons["helpButton"]):
-                        self.gameScreen = 1
+                        """elif self.check_if_position_in_domain(pygame.mouse.get_pos(), self.buttons["helpButton"]):
+                            self.gameScreen = 1"""
             elif event.type == pygame.VIDEORESIZE:
                 self.width = event.size[0]
                 self.height = event.size[1]
-                apply_min = False
                 if self.width < self.min_width or self.height < self.min_height:
-                    apply_min = True
                     self.width = max(self.width, self.min_width)
                     self.height = max(self.height, self.min_height)
                     pygame.display.set_mode(
@@ -172,6 +171,7 @@ class Game:
     def draw(self):
         pygame.font.init()  # initilize font
         self.width, self.height = self.window.get_size()
+
         self.window.fill("white")
         if (self.gameScreen == 0):
             self.drawHomeScreen()
@@ -198,7 +198,7 @@ class Game:
             # draw guesss
             for guess in self.guess_list:
                 pygame.draw.circle(self.window, self.distance_to_colour(self.distance(self.current_location.get_position(), guess)),
-                                   self.map_position_to_pixel(guess), 4)
+                                   self.map_position_to_pixel(guess), 8)
             self.draw_colorbar_message()
 
             # check if user found right answer
@@ -221,8 +221,8 @@ class Game:
             self.window.blit(
                 message_text, self.colour_bar)  # (5, self.height*0.92)
 
-            if "You got it!" in message:
-                time.sleep(1.5)
+            # if "You got it!" in message:
+            #    time.sleep(1.5)
         else:
             self.colour_bar = pygame.Rect(
                 0, self.height*0.9, self.width, self.height/10)
@@ -273,12 +273,13 @@ class Game:
         startButtonText = pygame.font.SysFont(
             'Arial', 75).render(" Start ", True, "black")
         startButton = startButtonText.get_rect()
-        startButton.center = (self.width*.3, self.height/2+250)
+        startButton.center = (self.width*.5, self.height*.91)
         pygame.draw.rect(self.window, "blue", startButton)
         self.window.blit(startButtonText, startButton)
         self.buttons["startButton"] = (
             startButton.top, startButton.left, startButton.bottom, startButton.right)
         # help button
+        """
         helpButtonText = pygame.font.SysFont(
             'Arial', 75).render(" Help ", True, "black")
         helpButton = helpButtonText.get_rect()
@@ -286,4 +287,4 @@ class Game:
         pygame.draw.rect(self.window, "lightgreen", helpButton)
         self.window.blit(helpButtonText, helpButton)
         self.buttons["helpButton"] = (
-            helpButton.top, helpButton.left, helpButton.bottom, helpButton.right)
+            helpButton.top, helpButton.left, helpButton.bottom, helpButton.right)"""
