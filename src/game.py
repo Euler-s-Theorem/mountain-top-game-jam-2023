@@ -129,7 +129,7 @@ class Game:
         if self.change_current_location_bool:
             current_location_index = self.locations.index(
                 self.current_location)
-            if current_location_index != self.locations.length() - 1:
+            if current_location_index != self.locations.size - 1:
                 current_location_index += 1
                 self.current_location = self.locations[current_location_index]
             self.change_current_location_bool = False
@@ -156,7 +156,7 @@ class Game:
         for guess in self.guess_list:
             pygame.draw.circle(self.window, self.distance_to_colour(self.distance((0, 0), guess)),
                                self.map_position_to_pixel(guess), 4)
-        self.draw_colorbar_message(self)
+        self.draw_colorbar_message()
 
         # check if user found right answer
         self.current_location_changer()
